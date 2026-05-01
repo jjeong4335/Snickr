@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Register — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>Create an account</h2>
+  <form method="post">
+    <label>Email</label>
+    <input type="email" name="email" required>
+    <label>Username</label>
+    <input type="text" name="username" required>
+    <label>Nickname</label>
+    <input type="text" name="nickname" required>
+    <label>Password</label>
+    <input type="password" name="password" required>
+    <button type="submit">Register</button>
+  </form>
+  <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+</div>
+{% endblock %}

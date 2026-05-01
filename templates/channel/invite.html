@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Invite — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>Invite to #{{ ch_name }}</h2>
+  <form method="post">
+    <label>Username</label>
+    <input type="text" name="username" list="candidates" required>
+    <datalist id="candidates">
+      {% for c in candidates %}
+      <option value="{{ c[0] }}">{{ c[1] }}</option>
+      {% endfor %}
+    </datalist>
+    <button type="submit">Send Invitation</button>
+  </form>
+  <a href="{{ url_for('message.detail', ch_id=ch_id) }}">← Back</a>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Profile — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>Profile</h2>
+  {% if user %}
+  <p><strong>Email:</strong> {{ user[0] }}</p>
+  <p><strong>Username:</strong> {{ user[1] }}</p>
+  <p><strong>Member since:</strong> {{ user[3].strftime('%Y-%m-%d') }}</p>
+  <form method="post">
+    <label>Nickname</label>
+    <input type="text" name="nickname" value="{{ user[2] }}" required>
+    <button type="submit">Update</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Search — Snickr{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>Search Messages</h2>
+</div>
+<form method="get" class="search-form">
+  <input type="text" name="q" value="{{ keyword }}" placeholder="Search messages..." autocomplete="off">
+  <button type="submit">Search</button>
+</form>
+
+{% if keyword %}
+  <p class="muted">{{ results|length }} result(s) for "<strong>{{ keyword }}</strong>"</p>
+  {% for r in results %}
+  <div class="message search-result">
+    <span class="msg-meta">
+      <a href="{{ url_for('message.detail', ch_id=r[0]) }}">
+        {{ r[2] }} / #{{ r[3] }}
+      </a>
+      <small>{{ r[5] }} · {{ r[1].strftime('%Y-%m-%d %H:%M') }}</small>
+    </span>
+    <p>{{ r[6] }}</p>
+  </div>
+  {% endfor %}
+{% endif %}
+{% endblock %}

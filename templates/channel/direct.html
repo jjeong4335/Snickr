@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}New Direct Message — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>New Direct Message</h2>
+  <form method="post">
+    <label>Username</label>
+    <input type="text" name="username" list="members" required>
+    <datalist id="members">
+      {% for m in members %}
+      <option value="{{ m[0] }}">{{ m[1] }}</option>
+      {% endfor %}
+    </datalist>
+    <button type="submit">Open DM</button>
+  </form>
+  <a href="{{ url_for('workspace.detail', ws_id=ws_id) }}">← Back</a>
+</div>
+{% endblock %}

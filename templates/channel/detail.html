@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}#{{ ch_name }} — Snickr{% endblock %}
+{% block content %}
+<div class="channel-header">
+  <div>
+    <a href="{{ url_for('workspace.detail', ws_id=ws_id) }}">← {{ ws[0] }}</a>
+    <h2>
+      {% if ch_type == 'public' %}🔓{% elif ch_type == 'private' %}🔒{% else %}💬{% endif %}
+      #{{ ch_name }}
+    </h2>
+  </div>
+  {% if ch_type != 'direct' %}
+  <a class="btn" href="{{ url_for('channel.invite', ch_id=ch_id) }}">+ Invite</a>
+  {% endif %}
+</div>
+
+<div class="messages">
+  {% if messages %}
+    {% for msg in messages %}
+    <div class="message">
+      <span class="msg-meta">
+        <strong>{{ msg[2] }}</strong>
+        <small>{{ msg[1].strftime('%Y-%m-%d %H:%M') }}</small>
+      </span>
+      <p>{{ msg[4] }}</p>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="muted">No messages yet. Say something!</p>
+  {% endif %}
+</div>
+
+<form method="post" class="message-form">
+  <input type="text" name="body" placeholder="Message #{{ ch_name }}" autocomplete="off" required>
+  <button type="submit">Send</button>
+</form>
+{% endblock %}

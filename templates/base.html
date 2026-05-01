@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Snickr{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="{{ url_for('workspace.list_workspaces') }}">⚡ Snickr</a>
+    <div class="nav-links">
+      {% if session.user_id %}
+        <a href="{{ url_for('workspace.list_workspaces') }}">Workspaces</a>
+        <a href="{{ url_for('message.search') }}">Search</a>
+        <a href="{{ url_for('auth.profile') }}">{{ session.username }}</a>
+        <form method="post" action="{{ url_for('auth.logout') }}" style="display:inline">
+          <button type="submit" class="btn-link">Logout</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

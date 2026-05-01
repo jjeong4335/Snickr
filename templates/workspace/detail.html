@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ ws[0] }} — Snickr{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>{{ ws[0] }}</h2>
+  <div>
+    {% if is_admin %}
+      <a class="btn" href="{{ url_for('workspace.invite', ws_id=ws_id) }}">+ Invite Member</a>
+    {% endif %}
+    <a class="btn" href="{{ url_for('channel.create', ws_id=ws_id) }}">+ Channel</a>
+    <a class="btn" href="{{ url_for('channel.create_direct', ws_id=ws_id) }}">+ Direct Message</a>
+  </div>
+</div>
+{% if ws[1] %}<p class="desc">{{ ws[1] }}</p>{% endif %}
+
+{% if channel_invites %}
+<div class="section">
+  <h3>Channel Invitations</h3>
+  {% for inv in channel_invites %}
+  <div class="invite-card">
+    <span>#{{ inv[1] }} — invited by {{ inv[2] }}</span>
+    <form method="post" action="{{ url_for('channel.accept_invite', ch_id=inv[3], inv_id=inv[0]) }}" style="display:inline">
+      <button type="submit" class="btn-sm">Accept</button>
+    </form>
+    <form method="post" action="{{ url_for('channel.decline_invite', ch_id=inv[3], inv_id=inv[0]) }}" style="display:inline">
+      <button type="submit" class="btn-sm btn-danger">Decline</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="two-col">
+  <div>
+    <h3>Channels</h3>
+    {% for ch in channels %}
+    <div class="channel-row">
+      {% if ch[2] == 'public' %}<span>🔓</span>
+      {% elif ch[2] == 'private' %}<span>🔒</span>
+      {% else %}<span>💬</span>
+      {% endif %}
+      {% if ch[3] %}
+        <a href="{{ url_for('message.detail', ch_id=ch[0]) }}">#{{ ch[1] }}</a>
+      {% else %}
+        <span class="muted">#{{ ch[1] }}</span>
+        <form method="post" action="{{ url_for('channel.join', ch_id=ch[0]) }}" style="display:inline">
+          <button type="submit" class="btn-sm">Join</button>
+        </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <h3>Members{% if is_admin %} <small>(admin)</small>{% endif %}</h3>
+    {% for m in members %}
+    <div class="member-row">
+      <span>{{ m[1] }} <small>{{ m[2] }}</small> {% if m[3] %}<span class="badge">Admin</span>{% endif %}</span>
+      {% if is_admin and m[0] != session.user_id %}
+      <form method="post" action="{{ url_for('workspace.toggle_admin', ws_id=ws_id, target_id=m[0]) }}" style="display:inline">
+        <button type="submit" class="btn-sm">{% if m[3] %}Remove Admin{% else %}Make Admin{% endif %}</button>
+      </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

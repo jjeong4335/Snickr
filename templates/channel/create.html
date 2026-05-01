@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}New Channel — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>Create Channel</h2>
+  <form method="post">
+    <label>Channel Name</label>
+    <input type="text" name="name" required>
+    <label>Type</label>
+    <select name="type">
+      <option value="public">Public</option>
+      <option value="private">Private</option>
+    </select>
+    <button type="submit">Create</button>
+  </form>
+  <a href="{{ url_for('workspace.detail', ws_id=ws_id) }}">← Back</a>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Workspaces — Snickr{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>My Workspaces</h2>
+  <a class="btn" href="{{ url_for('workspace.create_workspace') }}">+ New Workspace</a>
+</div>
+
+{% if invitations %}
+<div class="section">
+  <h3>Pending Invitations</h3>
+  {% for inv in invitations %}
+  <div class="invite-card">
+    <span><strong>{{ inv[1] }}</strong> — invited by {{ inv[2] }}</span>
+    <form method="post" action="{{ url_for('workspace.accept_invite', ws_id=inv[3], inv_id=inv[0]) }}" style="display:inline">
+      <button type="submit" class="btn-sm">Accept</button>
+    </form>
+    <form method="post" action="{{ url_for('workspace.decline_invite', ws_id=inv[3], inv_id=inv[0]) }}" style="display:inline">
+      <button type="submit" class="btn-sm btn-danger">Decline</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="section">
+  {% if workspaces %}
+    <div class="card-grid">
+    {% for ws in workspaces %}
+      <a class="card" href="{{ url_for('workspace.detail', ws_id=ws[0]) }}">
+        <div class="card-title">{{ ws[1] }}</div>
+        <div class="card-sub">{{ ws[2] or 'No description' }}</div>
+        {% if ws[3] %}<span class="badge">Admin</span>{% endif %}
+      </a>
+    {% endfor %}
+    </div>
+  {% else %}
+    <p>No workspaces yet. Create one!</p>
+  {% endif %}
+</div>
+{% endblock %}

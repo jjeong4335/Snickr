@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Invite — Snickr{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h2>Invite to {{ ws[0] }}</h2>
+  <form method="post">
+    <label>Email address</label>
+    <input type="email" name="email" required>
+    <button type="submit">Send Invitation</button>
+  </form>
+  <a href="{{ url_for('workspace.detail', ws_id=ws_id) }}">← Back</a>
+</div>
+{% endblock %}
